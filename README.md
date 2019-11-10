@@ -15,13 +15,11 @@ Windows release can be found at: https://github.com/Luomu/volcako/releases/downl
 
 Only a Windows build has been made so far. However, all the libraries used are cross platform so a Mac/Linux port should be a breeze.
 
-First you need to generate the makefile/solution for the IDE of your choice. We use Genie. To create .sln for VS 2019, run this in the root directory:
+First you need to generate the makefile/solution for the IDE of your choice. For that we use [Genie](https://github.com/bkaradzic/genie). To create .sln for VS 2019, run this in the root directory:
 
 ```genie vs2019```
 
-Read more at: https://github.com/bkaradzic/genie
-
-Precompiled Windows executable: github.com/bkaradzic/bx/raw/master/tools/bin/windows/genie.exe
+Precompiled Windows executable: https://github.com/bkaradzic/bx/raw/master/tools/bin/windows/genie.exe
 
 ## Libraries used
 dear imgui - https://github.com/ocornut/imgui
