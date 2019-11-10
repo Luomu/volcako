@@ -9,7 +9,7 @@ Some nice to know things:
 - Control-click on an input field to type in the value
 - The last edited present is auto-saved/loaded into lastpreset.txt
 
-Windows release can be found at: github.com/Luomu/volcako/releases/download/r1/volcako-r1.zip
+Windows release can be found at: https://github.com/Luomu/volcako/releases/download/r1/volcako-r1.zip
 
 ## Building
 
@@ -19,25 +19,25 @@ First you need to generate the makefile/solution for the IDE of your choice. We 
 
 ```genie vs2019```
 
-Read more at: github.com/bkaradzic/genie
+Read more at: https://github.com/bkaradzic/genie
 
 Precompiled Windows executable: github.com/bkaradzic/bx/raw/master/tools/bin/windows/genie.exe
 
 ## Libraries used
-dear imgui - github.com/ocornut/imgui
+dear imgui - https://github.com/ocornut/imgui
 
 glfw - www.glfw.org/
 
-gl3w - github.com/skaslev/gl3w
+gl3w - https://github.com/skaslev/gl3w
 
-inipp - github.com/mcmtroffaes/inipp
+inipp - https://github.com/mcmtroffaes/inipp
 
 rtmidi - www.music.mcgill.ca/~gary/rtmidi/
 
-tinyfiledialogs - sourceforge.net/projects/tinyfiledialogs/
+tinyfiledialogs - https://sourceforge.net/projects/tinyfiledialogs/
 
 ## References
 Korg Volca FM Midi implementation - www.korg.com/us/support/download/manual/0/558/2963/
 
 ## Thanks to
-Dexed - asb2m10.github.io/dexed/ - DX7 VST and editor, used to verify Sysex compatibility
+Dexed - https://asb2m10.github.io/dexed/ - DX7 VST and editor, used to verify Sysex compatibility
