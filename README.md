@@ -2,6 +2,8 @@
 
 This is a realtime editor for the Korg Volca FM. It exposes all of Volca's parameters in one ~~ugly~~ functional screen. In addition it can load and save entire 32 voice banks in .SYX format. If you have a midi input device connected, the keypresses will be routed to Volca, optionally with note velocity!
 
+![Screenshot](docs/screenshot.png)
+
 Some nice to know things:
 - Right click on an envelope to copy/paste the values
 - Control-click on an input field to type in the value
