@@ -7,7 +7,7 @@ Some nice to know things:
 - Control-click on an input field to type in the value
 - The last edited present is auto-saved/loaded into lastpreset.txt
 
-Windows release can be found at: xxx
+Windows release can be found at: github.com/Luomu/volcako/releases/download/r1/volcako-r1.zip
 
 ## Building
 
