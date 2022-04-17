@@ -1,3 +1,6 @@
+/*
+ * Licensed under MIT. See LICENSE.txt for details.
+ */
 #include "sysex.h"
 #include "common.h"
 

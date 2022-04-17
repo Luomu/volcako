@@ -1,3 +1,6 @@
+/*
+ * Licensed under MIT. See LICENSE.txt for details.
+ */
 #pragma once
 #include "envelope.h"
 #include "rtmidi/RtMidi.h"

@@ -1,3 +1,6 @@
+/*
+ * Licensed under MIT. See LICENSE.txt for details.
+ */
 #ifndef IMGUI_DEFINE_MATH_OPERATORS
 #define IMGUI_DEFINE_MATH_OPERATORS
 #endif

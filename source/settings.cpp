@@ -1,3 +1,6 @@
+/*
+ * Licensed under MIT. See LICENSE.txt for details.
+ */
 #include "settings.h"
 #include "appstate.h"
 #include <fstream>

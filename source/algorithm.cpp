@@ -1,3 +1,6 @@
+/*
+ * Licensed under MIT. See LICENSE.txt for details.
+ */
 #include "algorithm.h"
 
 // Interprets algorithm layout ascii data, typed in from

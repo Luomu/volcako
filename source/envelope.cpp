@@ -1,3 +1,6 @@
+/*
+ * Licensed under MIT. See LICENSE.txt for details.
+ */
 #include "envelope.h"
 #include "imgui.h"
 #ifndef IMGUI_DEFINE_MATH_OPERATORS
