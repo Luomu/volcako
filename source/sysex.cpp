@@ -39,7 +39,7 @@ u8 SynthState::send(RtMidiOut& midi_out)
     // common
     m[SX_STATUS]         = 0xf0;
     m[SX_YAMAHA_ID]      = 0x43;
-    m[SX_MIDI_CHANNEL]   = 0x00;
+    m[SX_MIDI_CHANNEL]   = 0x00; // doesn't seem to be recognized - dx7 only supported channel 1
     m[SX_FORMAT_NUMBER]  = 0x00;
     m[SX_BYTE_COUNT_MSB] = 0x01;
     m[SX_BYTE_COUNT_LSB] = 0x1b;
@@ -343,7 +343,7 @@ void SynthState::to_sysex_bank(u8* m, int voice_index) const
     {
         m[SX_STATUS]         = 0xf0; // sysex start
         m[SX_YAMAHA_ID]      = 0x43;
-        m[SX_MIDI_CHANNEL]   = 0x00;
+        m[SX_MIDI_CHANNEL]   = 0x00; // doesn't seem to be recognized - dx7 only supported channel 1
         m[SX_FORMAT_NUMBER]  = 0x09; // 32voices
         m[SX_BYTE_COUNT_MSB] = 0x20;
         m[SX_BYTE_COUNT_LSB] = 0x00;
