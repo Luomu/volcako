@@ -6,6 +6,12 @@ This is a realtime editor for the Korg Volca FM. It exposes all of Volca's param
 
 ![Screenshot](docs/screenshot.png)
 
+How to use:
+- Select your midi out device from Settings. The Volca listens to the sysex messages regardless of the channel it's set to.
+- Selecting a patch or editing the patch parameters sends it to the currently selected slot on the Volca. You still have to Save the patch manually on the device (Edit->Write, hardware limitation)
+- File->Load .SYX can be used to load an entire DX7 patch bank.
+- File->Send All Patches will send and save all of the 32 patches to the device.
+
 Some nice to know things:
 - Right click on an envelope to copy/paste the values
 - Control-click on an input field to type in the value
