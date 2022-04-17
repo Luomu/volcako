@@ -36,8 +36,6 @@ dear imgui - https://github.com/ocornut/imgui
 
 glfw - www.glfw.org/
 
-gl3w - https://github.com/skaslev/gl3w
-
 inipp - https://github.com/mcmtroffaes/inipp
 
 rtmidi - www.music.mcgill.ca/~gary/rtmidi/
