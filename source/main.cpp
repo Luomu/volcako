@@ -779,14 +779,19 @@ int main(int, char**)
     ImGui_ImplOpenGL3_Init(glsl_version);
 
     // Support loading the included font from a couple of places
-    ImFont* main_font = nullptr;
-    if (Fileops::file_exists("DroidSans.ttf"))
+    ImFont*                  main_font      = nullptr;
+    std::vector<std::string> font_locations = {
+        "DroidSans.ttf",
+        "misc/fonts/DroidSans.ttf",
+        "../misc/fonts/DroidSans.ttf"
+    };
+    for (const auto& location : font_locations)
     {
-        main_font = IO.Fonts->AddFontFromFileTTF("DroidSans.ttf", FONT_SIZE);
-    }
-    else
-    {
-        main_font = IO.Fonts->AddFontFromFileTTF("../misc/fonts/DroidSans.ttf", FONT_SIZE);
+        if (Fileops::file_exists(location.c_str()))
+        {
+            main_font = IO.Fonts->AddFontFromFileTTF(location.c_str(), FONT_SIZE);
+            break;
+        }
     }
 
     Settings settings("settings.ini");
