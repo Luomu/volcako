@@ -1,17 +1,16 @@
 #include "algorithm.h"
 
-//Interprets algorithm layout ascii data, typed in from
-//the Volca FM reference card. The data may be "hardcoded", but
-//it's not like they will add new algorithms!
+// Interprets algorithm layout ascii data, typed in from
+// the Volca FM reference card. The data may be "hardcoded", but
+// it's not like they will add new algorithms!
 class AlgorithmBuilder
 {
 public:
     std::vector<Algorithm> algorithms;
 
-#pragma warning(disable:4100)
     void build(const int width, std::vector<int> layout, int feedback_from, int feedback_to)
     {
-        //will be used to draw a line connecting all carriers
+        // will be used to draw a line connecting all carriers
         float carrier_min = 100.f;
         float carrier_max = -100.f;
 
@@ -19,14 +18,14 @@ public:
         const int height = layout.size() / width;
         for (int col = 0; col < width; col++)
         {
-            const float adjcol = col * 2.f; //add space between cells
+            const float adjcol  = col * 2.f; // add space between cells
             const float centerx = adjcol + 0.5f;
             for (int row = 0; row < height; row++)
             {
-                const int idx = width * row + col;
-                const int cell = layout[idx];
+                const int   idx     = width * row + col;
+                const int   cell    = layout[idx];
                 const float centery = row + 0.5f;
-                int op_idx = to_op_index(cell);
+                int         op_idx  = to_op_index(cell);
                 if (op_idx >= 0 && op_idx <= 5)
                 {
                     Algorithm::OperatorNode& op = algo.operators[op_idx];
@@ -41,12 +40,12 @@ public:
                     {
                         if (feedback_to == feedback_from)
                         {
-                            algo.lines.push_back({ centerx, centery - 0.5f, centerx, centery - 1.f }); //up
-                            algo.lines.push_back({ centerx, centery - 1.0f, centerx + 1.0f, centery - 1.f }); //right
-                            algo.lines.push_back({ centerx + 1.0f, centery - 1.f, centerx + 1.0f, centery + 1.0f }); //down
-                            algo.lines.push_back({ centerx + 1.0f, centery + 1.0f, centerx, centery + 1.0f }); //left
+                            algo.lines.push_back({ centerx, centery - 0.5f, centerx, centery - 1.f });               // up
+                            algo.lines.push_back({ centerx, centery - 1.0f, centerx + 1.0f, centery - 1.f });        // right
+                            algo.lines.push_back({ centerx + 1.0f, centery - 1.f, centerx + 1.0f, centery + 1.0f }); // down
+                            algo.lines.push_back({ centerx + 1.0f, centery + 1.0f, centerx, centery + 1.0f });       // left
                         }
-                        //we know there are only a couple of exceptional feedback cases
+                        // we know there are only a couple of exceptional feedback cases
                         else if (feedback_from == 4 && feedback_to == 6)
                         {
                             algo.lines.push_back({ centerx, centery - 0.5f, centerx, centery - 1.f });
@@ -63,7 +62,7 @@ public:
                         }
                     }
 
-                    //half line downwards
+                    // half line downwards
                     if (op.is_carrier)
                     {
                         algo.lines.push_back({ centerx, centery + 0.5f, centerx, centery + 1.f });
@@ -83,28 +82,28 @@ public:
                     {
                         algo.lines.push_back({ centerx, centery, centerx, centery - 0.5f });
                         algo.lines.push_back({ centerx - 0.5f, centery, centerx, centery });
-                        //extra left
+                        // extra left
                         algo.lines.push_back({ centerx - 0.5f, centery, centerx - 1.5f, centery });
                     }
                     else if (cell == '└')
                     {
                         algo.lines.push_back({ centerx, centery, centerx, centery - 0.5f });
                         algo.lines.push_back({ centerx, centery, centerx + 0.5f, centery });
-                        //extra right
+                        // extra right
                         algo.lines.push_back({ centerx + 0.5f, centery, centerx + 1.5f, centery });
                     }
                     else if (cell == '┐')
                     {
                         algo.lines.push_back({ centerx - 0.5f, centery, centerx, centery });
                         algo.lines.push_back({ centerx, centery, centerx, centery + 0.5f });
-                        //extra left
+                        // extra left
                         algo.lines.push_back({ centerx - 0.5f, centery, centerx - 1.5f, centery });
                     }
                     else if (cell == '┌')
                     {
                         algo.lines.push_back({ centerx, centery, centerx + 0.5f, centery });
                         algo.lines.push_back({ centerx, centery, centerx, centery + 0.5f });
-                        //extra right
+                        // extra right
                         algo.lines.push_back({ centerx + 0.5f, centery, centerx + 1.5f, centery });
                     }
                     else if (cell == '├')
@@ -134,16 +133,19 @@ private:
         if (cell_value == '3') return 2;
         if (cell_value == '4') return 3;
         if (cell_value == '5') return 4;
-        if (cell_value == '6') return 5;
-        else return -1;
+        if (cell_value == '6')
+            return 5;
+        else
+            return -1;
     }
 };
 
 std::vector<Algorithm> Algorithm::build_algorithms()
 {
-    //Defining algorithm layouts
-    //Bottom row is always carriers
-    //feedback from-to is specified separately 
+    // Defining algorithm layouts
+    // Bottom row is always carriers
+    // feedback from-to is specified separately
+    // clang-format off
 
     AlgorithmBuilder builder;
 
@@ -379,4 +381,5 @@ std::vector<Algorithm> Algorithm::build_algorithms()
         '1', '2', '3', '4', '5', '6' }, 6, 6);
 
     return builder.algorithms;
+    // clang-format on
 }

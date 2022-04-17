@@ -1,16 +1,16 @@
 #pragma once
+#include "common.h"
 #include "imgui_internal.h"
 #include "inipp/inipp.h"
-#include <fstream>
-#include "common.h"
 #include "sysex.h"
+#include <fstream>
 
 #pragma warning(push)
 #ifdef _MSC_VER
-#pragma warning (disable: 4996)     // 'This function or variable may be unsafe': strcpy, strdup, sprintf, vsnprintf, sscanf, fopen
+#pragma warning(disable : 4996) // 'This function or variable may be unsafe': strcpy, strdup, sprintf, vsnprintf, sscanf, fopen
 #endif
 
-//Saving and loading patch data to/from .txt and .syx
+// Saving and loading patch data to/from .txt and .syx
 namespace Fileops
 {
     void add_line(ImGuiTextBuffer& buf, const char* name, int value)
@@ -23,8 +23,8 @@ namespace Fileops
 #define SET(field) add_line(buf, #field, op.field);
         buf.appendf("[operator-%d]\n", op.op_number);
         add_line(buf, "enabled", op.is_on ? 1 : 0);
-        buf.appendf("eg_rate=%d,%d,%d,%d\n", op.envelope.r1,op.envelope.r2,op.envelope.r3,op.envelope.r4);
-        buf.appendf("eg_level=%d,%d,%d,%d\n", op.envelope.l1,op.envelope.l2,op.envelope.l3,op.envelope.l4);
+        buf.appendf("eg_rate=%d,%d,%d,%d\n", op.envelope.r1, op.envelope.r2, op.envelope.r3, op.envelope.r4);
+        buf.appendf("eg_level=%d,%d,%d,%d\n", op.envelope.l1, op.envelope.l2, op.envelope.l3, op.envelope.l4);
         SET(level_scale_break_point);
         SET(level_scale_left_depth);
         SET(level_scale_right_depth);
@@ -48,8 +48,8 @@ namespace Fileops
         buf.append("[patch]\n");
         buf.appendf("name=%s\n", synth.patch_name);
         add_line(buf, "algorithm", synth.algorithm);
-        buf.appendf("pitch_rate=%d,%d,%d,%d\n", synth.pitch_env.r1,synth.pitch_env.r2,synth.pitch_env.r3,synth.pitch_env.r4);
-        buf.appendf("pitch_level=%d,%d,%d,%d\n", synth.pitch_env.l1,synth.pitch_env.l2,synth.pitch_env.l3,synth.pitch_env.l4);
+        buf.appendf("pitch_rate=%d,%d,%d,%d\n", synth.pitch_env.r1, synth.pitch_env.r2, synth.pitch_env.r3, synth.pitch_env.r4);
+        buf.appendf("pitch_level=%d,%d,%d,%d\n", synth.pitch_env.l1, synth.pitch_env.l2, synth.pitch_env.l3, synth.pitch_env.l4);
         add_line(buf, "feedback", synth.feedback);
         add_line(buf, "osc_key_sync", synth.osc_key_sync ? 1 : 0);
         add_line(buf, "lfo_delay", synth.lfo_delay);
@@ -76,7 +76,7 @@ namespace Fileops
         buf.Buf.push_back(0);
 
         write_preset(buf, synth);
-        
+
         if (out_size)
             *out_size = (size_t)buf.size();
         return buf.c_str();
@@ -87,16 +87,16 @@ namespace Fileops
         if (!ini_filename)
             return;
 
-        size_t ini_data_size = 0;
-        const char* ini_data = save_preset_to_memory(&ini_data_size, synth);
-        FILE* f = ImFileOpen(ini_filename, "wt");
+        size_t      ini_data_size = 0;
+        const char* ini_data      = save_preset_to_memory(&ini_data_size, synth);
+        FILE*       f             = ImFileOpen(ini_filename, "wt");
         if (!f)
             return;
         fwrite(ini_data, sizeof(char), ini_data_size, f);
         fclose(f);
     }
 
-    //number gets converted wrong if read as u8 straight away
+    // number gets converted wrong if read as u8 straight away
     void extract_u8(inipp::Ini<char>::Section& sec, const char* name, u8& output)
     {
         int temp = -1;
@@ -126,7 +126,7 @@ namespace Fileops
         std::string temp;
         inipp::extract(sec[name], temp);
 
-        //VS scanf doesn't seem to support %hhu properly (C6328), so read to temp ints
+        // VS scanf doesn't seem to support %hhu properly (C6328), so read to temp ints
         unsigned int a, b, c, d = 0;
         if (sscanf(temp.c_str(), "%u,%u,%u,%u", &a, &b, &c, &d) != 4)
         {
@@ -158,7 +158,7 @@ namespace Fileops
 #undef GET_U8
     }
 
-    void load_operator(inipp::Ini<char>::Section& sec, Operator &op)
+    void load_operator(inipp::Ini<char>::Section& sec, Operator& op)
     {
 #define GET_U8(key) extract_u8(sec, #key, op.key);
         extract_bool(sec, "enabled", op.is_on);
@@ -183,7 +183,7 @@ namespace Fileops
     void load_from_disk(const char* filename, SynthState& synth)
     {
         inipp::Ini<char> ini;
-        std::ifstream is(filename);
+        std::ifstream    is(filename);
         if (is.fail())
         {
             return;
@@ -273,4 +273,3 @@ namespace Fileops
 }
 
 #pragma warning(pop)
-

@@ -4,7 +4,7 @@
 
 typedef unsigned char u8;
 
-//Operator and pitch envelope class
+// Operator and pitch envelope class
 struct Envelope
 {
     u8 r1 = 99;
@@ -30,9 +30,9 @@ struct Envelope
     }
 
     static void draw_envelope(const char* label, const Envelope& envelope, ImVec2 frame_size);
-    //make a clipboard-appropriate string:
+    // make a clipboard-appropriate string:
     //"env={r1,r2,r3,r4,l1,l2,l3,l4}"
     std::string to_string() const;
-    //set values from a clipboard string
+    // set values from a clipboard string
     void from_string(const std::string& string);
 };

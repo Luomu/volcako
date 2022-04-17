@@ -2,7 +2,7 @@
 
 typedef unsigned char u8;
 
-//Sysex offset names for one voice message
+// Sysex offset names for one voice message
 //(32 voice sysex packs multiple values in one field)
 enum SysexFields
 {
@@ -193,7 +193,7 @@ enum SysexFields
     SX_NAME8,
     SX_NAME9,
     SX_NAME10,
-    SX_OPERATOR_ON, //b5-b0 operator 1-6 on/off bit
+    SX_OPERATOR_ON, // b5-b0 operator 1-6 on/off bit
 
     SX_END
 };

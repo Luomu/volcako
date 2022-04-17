@@ -4,7 +4,7 @@
 
 typedef inipp::Ini<char> Ini;
 
-int chosen_in_port = 0;
+int chosen_in_port  = 0;
 int chosen_out_port = 0;
 
 int find_selected_index(const std::string& name, const std::vector<std::string>& port_names)
@@ -21,7 +21,7 @@ int find_selected_index(const std::string& name, const std::vector<std::string>&
     return 0;
 }
 
-Settings::Settings(const std::string & filename)
+Settings::Settings(const std::string& filename)
     : filename(filename)
     , send_velocity(true)
 {
@@ -34,7 +34,7 @@ Settings::Settings(const std::string & filename)
 
         Ini::Section& sec = ini.sections["settings"];
 
-        midi_in_device = sec["midi_in_device"];
+        midi_in_device  = sec["midi_in_device"];
         midi_out_device = sec["midi_out_device"];
 
         send_velocity = sec["send_velocity"] == "true";
@@ -45,10 +45,10 @@ void Settings::save_to_disk()
 {
     Ini ini;
 
-    Ini::Section& sec = ini.sections["settings"];
-    sec["midi_in_device"] = midi_in_device;
+    Ini::Section& sec      = ini.sections["settings"];
+    sec["midi_in_device"]  = midi_in_device;
     sec["midi_out_device"] = midi_out_device;
-    sec["send_velocity"] = send_velocity ? "true" : "false";
+    sec["send_velocity"]   = send_velocity ? "true" : "false";
 
     std::ofstream of;
     of.open(filename);
@@ -56,13 +56,13 @@ void Settings::save_to_disk()
     of.close();
 }
 
-void Settings::layout_settings_window(AppState & app_state)
+void Settings::layout_settings_window(AppState& app_state)
 {
     if (!ImGui::IsPopupOpen("Options"))
     {
         app_state.refresh_available_midi_ports();
 
-        chosen_in_port = find_selected_index(midi_in_device, app_state.midi_in_port_names);
+        chosen_in_port  = find_selected_index(midi_in_device, app_state.midi_in_port_names);
         chosen_out_port = find_selected_index(midi_out_device, app_state.midi_out_port_names);
 
         ImGui::OpenPopup("Options");
@@ -112,7 +112,7 @@ void Settings::layout_settings_window(AppState & app_state)
 
     if (ImGui::Button("Close"))
     {
-        app_state.show_options = false;
+        app_state.show_options        = false;
         app_state.midi_settings_dirty = true;
     }
 

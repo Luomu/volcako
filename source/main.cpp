@@ -1,19 +1,19 @@
 #ifndef IMGUI_DEFINE_MATH_OPERATORS
 #define IMGUI_DEFINE_MATH_OPERATORS
 #endif
-#include "imgui.h"
-#include "imgui_impl_glfw.h"
-#include "imgui_impl_opengl3.h"
-#include <stdio.h>
-#include "rtmidi/RtMidi.h"
-#include "tinyfiledialogs/tinyfiledialogs.h"
-#include "common.h"
-#include "filesops.h"
 #include "algorithm.h"
 #include "appstate.h"
+#include "common.h"
+#include "filesops.h"
 #include "settings.h"
+#include <imgui.h>
+#include <imgui_impl_glfw.h>
+#include <imgui_impl_opengl3.h>
+#include <rtmidi/RtMidi.h>
+#include <stdio.h>
+#include <tinyfiledialogs/tinyfiledialogs.h>
 
-#pragma warning(disable:4996) //crt_secure_no_warnings
+#pragma warning(disable : 4996) // crt_secure_no_warnings
 
 #ifndef IMGUI_IMPL_OPENGL_LOADER_GL3W
 #define IMGUI_IMPL_OPENGL_LOADER_GL3W
@@ -26,9 +26,9 @@
 #pragma comment(lib, "legacy_stdio_definitions")
 #endif
 
-const float ALGO_BOX_SIZE = 20.f;
-const float FONT_SIZE = 16.0f;
-const ImVec4 CLEAR_COLOR = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+const float  ALGO_BOX_SIZE = 20.f;
+const float  FONT_SIZE     = 16.0f;
+const ImVec4 CLEAR_COLOR   = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
 #if __APPLE__
 // GL 3.2 + GLSL 150
@@ -46,12 +46,12 @@ static void glfw_error_callback(int error, const char* description)
 struct MidiError
 {
     RtMidiError::Type type;
-    std::string errorText;
+    std::string       errorText;
 };
 
 std::vector<MidiError> midi_errors;
 
-void midi_error_callback(RtMidiError::Type type, const std::string &errorText, void *)
+void midi_error_callback(RtMidiError::Type type, const std::string& errorText, void*)
 {
     if (midi_errors.size() < 1000)
         midi_errors.push_back({ type, errorText });
@@ -59,7 +59,7 @@ void midi_error_callback(RtMidiError::Type type, const std::string &errorText, v
     std::cout << "MidiError: " << type << " " << errorText << std::endl;
 }
 
-void midi_in_callback(double /*delta_time*/, std::vector<unsigned char> *message, void* user_data)
+void midi_in_callback(double /*delta_time*/, std::vector<unsigned char>* message, void* user_data)
 {
     /*unsigned int nBytes = message->size();
     for (unsigned int i = 0; i < nBytes; i++)
@@ -82,7 +82,7 @@ void midi_in_callback(double /*delta_time*/, std::vector<unsigned char> *message
 }
 
 // Open the midi port matching name
-void open_midi_port(const std::string &port_name, RtMidi& midi_interface)
+void open_midi_port(const std::string& port_name, RtMidi& midi_interface)
 {
     if (midi_interface.isPortOpen())
         midi_interface.closePort();
@@ -112,7 +112,7 @@ std::string get_from_clipboard(const AppState& app)
     return glfwGetClipboardString(app.window);
 }
 
-//imgui::dragint wrapper for u8 type
+// imgui::dragint wrapper for u8 type
 bool drag_u8(const char* label, u8& value, int min = 0, int max = 99)
 {
     int tempval = value;
@@ -124,18 +124,18 @@ bool drag_u8(const char* label, u8& value, int min = 0, int max = 99)
     return false;
 }
 
-//Update the operators' carrier status when algorithm changes
-void on_algorithm_changed(const AppState &app, SynthState &synth)
+// Update the operators' carrier status when algorithm changes
+void on_algorithm_changed(const AppState& app, SynthState& synth)
 {
     if (synth.algorithm <= app.algorithms.size())
     {
         const Algorithm& algo = app.algorithms[synth.algorithm - 1];
-        synth.op1.is_carrier = algo.operators[0].is_carrier;
-        synth.op2.is_carrier = algo.operators[1].is_carrier;
-        synth.op3.is_carrier = algo.operators[2].is_carrier;
-        synth.op4.is_carrier = algo.operators[3].is_carrier;
-        synth.op5.is_carrier = algo.operators[4].is_carrier;
-        synth.op6.is_carrier = algo.operators[5].is_carrier;
+        synth.op1.is_carrier  = algo.operators[0].is_carrier;
+        synth.op2.is_carrier  = algo.operators[1].is_carrier;
+        synth.op3.is_carrier  = algo.operators[2].is_carrier;
+        synth.op4.is_carrier  = algo.operators[3].is_carrier;
+        synth.op5.is_carrier  = algo.operators[4].is_carrier;
+        synth.op6.is_carrier  = algo.operators[5].is_carrier;
     }
     else
     {
@@ -161,7 +161,7 @@ void init_patch(AppState& app)
     app.patch_dirty = true;
 }
 
-//Set all 32 patches to init state, named INITXX
+// Set all 32 patches to init state, named INITXX
 void init_all(AppState& app)
 {
     init_patch(app);
@@ -169,13 +169,13 @@ void init_all(AppState& app)
     for (unsigned int i = 0; i < app.patches.size(); i++)
     {
         app.patches[i] = SynthState();
-        ImFormatString(app.patches[i].patch_name, IM_ARRAYSIZE(app.patches[i].patch_name), "INIT%d", i+1);
+        ImFormatString(app.patches[i].patch_name, IM_ARRAYSIZE(app.patches[i].patch_name), "INIT%d", i + 1);
     }
 }
 
-//Copy pasting envelopes.
-//There doesn't seem to be an obvious way to check the context menu on multiple widgets,
-//so this must be called after each right-clickable widget.
+// Copy pasting envelopes.
+// There doesn't seem to be an obvious way to check the context menu on multiple widgets,
+// so this must be called after each right-clickable widget.
 void envelope_copy_paste_context_menu(const char* id, AppState& app, Envelope& envelope)
 {
     if (ImGui::BeginPopupContextItem(id))
@@ -193,7 +193,7 @@ void envelope_copy_paste_context_menu(const char* id, AppState& app, Envelope& e
     }
 }
 
-//Draw the envelope graph and rate/level input boxes
+// Draw the envelope graph and rate/level input boxes
 void layout_envelope(AppState& app, Envelope& envelope)
 {
     ImGui::PushItemWidth(250);
@@ -206,10 +206,10 @@ void layout_envelope(AppState& app, Envelope& envelope)
     };
     if (ImGui::DragInt4("R", v, 0.4f, 0, 99))
     {
-        envelope.r1 = v[0];
-        envelope.r2 = v[1];
-        envelope.r3 = v[2];
-        envelope.r4 = v[3];
+        envelope.r1     = v[0];
+        envelope.r2     = v[1];
+        envelope.r3     = v[2];
+        envelope.r4     = v[3];
         app.patch_dirty = true;
     }
 
@@ -221,10 +221,10 @@ void layout_envelope(AppState& app, Envelope& envelope)
     v[3] = envelope.l4;
     if (ImGui::DragInt4("L", v, 0.4f, 0, 99))
     {
-        envelope.l1 = v[0];
-        envelope.l2 = v[1];
-        envelope.l3 = v[2];
-        envelope.l4 = v[3];
+        envelope.l1     = v[0];
+        envelope.l2     = v[1];
+        envelope.l3     = v[2];
+        envelope.l4     = v[3];
         app.patch_dirty = true;
     }
 
@@ -233,8 +233,8 @@ void layout_envelope(AppState& app, Envelope& envelope)
     ImGui::PopItemWidth();
 }
 
-//Layout all controls for all operators
-void layout_operator(Operator &op, AppState &app)
+// Layout all controls for all operators
+void layout_operator(Operator& op, AppState& app)
 {
     const ImGuiStyle& style = ImGui::GetStyle();
     ImGui::PushID(op.op_number);
@@ -244,12 +244,12 @@ void layout_operator(Operator &op, AppState &app)
     ImGui::SameLine(60);
     app.patch_dirty |= (ImGui::Checkbox("On", &op.is_on));
 
-    //OSCN
+    // OSCN
     ImGui::SameLine();
     bool osc_fixed = op.osc_mode > 0;
     if (ImGui::Checkbox("Fixed", &osc_fixed))
     {
-        op.osc_mode = osc_fixed ? 1 : 0;
+        op.osc_mode     = osc_fixed ? 1 : 0;
         app.patch_dirty = true;
     }
     if (ImGui::IsItemHovered())
@@ -260,14 +260,14 @@ void layout_operator(Operator &op, AppState &app)
     int coarse = op.freq_coarse;
     if (ImGui::SliderInt("FreqCoarse", &coarse, 0, 31))
     {
-        op.freq_coarse = static_cast<u8>(coarse);
+        op.freq_coarse  = static_cast<u8>(coarse);
         app.patch_dirty = true;
     }
 
     int fine = op.freq_fine;
     if (ImGui::SliderInt("FreqFine", &fine, 0, 99))
     {
-        op.freq_fine = static_cast<u8>(fine);
+        op.freq_fine    = static_cast<u8>(fine);
         app.patch_dirty = true;
     }
 
@@ -282,11 +282,11 @@ void layout_operator(Operator &op, AppState &app)
 
     ImGui::PushItemWidth(80.f);
 
-    //DETU
+    // DETU
     int detune = op.detune;
     if (ImGui::SliderInt("Detune", &detune, 0, 14))
     {
-        op.detune = static_cast<u8>(detune);
+        op.detune       = static_cast<u8>(detune);
         app.patch_dirty = true;
     }
 
@@ -294,30 +294,30 @@ void layout_operator(Operator &op, AppState &app)
 
     layout_envelope(app, op.envelope);
     Envelope::draw_envelope("envelope", op.envelope, ImVec2(200.f, 75.f));
-    envelope_copy_paste_context_menu("copypaste_env", app, op.envelope); //for the envelope graphic itself
+    envelope_copy_paste_context_menu("copypaste_env", app, op.envelope); // for the envelope graphic itself
 
     ImGui::PushItemWidth(40.f);
 
-    //ORS
+    // ORS
     app.patch_dirty |= drag_u8("Rate scaling", op.osc_rate_scale, 0, 7);
 
-    //AMS
+    // AMS
     ImGui::SameLine();
     app.patch_dirty |= drag_u8("Amp mod sense", op.amp_mod_sense, 0, 3);
 
-    //KVS
+    // KVS
     app.patch_dirty |= drag_u8("Vel. sense", op.key_velocity_sense, 0, 7);
     ImGui::PopItemWidth();
 
     ImGui::Text("Level Scaling");
-    int current_bp = op.level_scale_break_point;
-    static const char *break_point_names[] = {"A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#"};
+    int                current_bp          = op.level_scale_break_point;
+    static const char* break_point_names[] = { "A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#" };
     std::ostringstream oss;
     oss << break_point_names[current_bp % 12] << (current_bp + 9) / 12 - 1 << " (%d)";
     if (ImGui::SliderInt("Break Point", &current_bp, 0, 99, oss.str().c_str()))
     {
         op.level_scale_break_point = current_bp;
-        app.patch_dirty = true;
+        app.patch_dirty            = true;
     }
 
     app.patch_dirty |= drag_u8("L Depth", op.level_scale_left_depth);
@@ -329,7 +329,7 @@ void layout_operator(Operator &op, AppState &app)
     if (ImGui::Combo("L Curve", &item_current, LEVEL_SCALE_CURVE_NAMES, IM_ARRAYSIZE(LEVEL_SCALE_CURVE_NAMES)))
     {
         op.level_scale_left_curve = item_current;
-        app.patch_dirty = true;
+        app.patch_dirty           = true;
     }
 
     ImGui::SameLine();
@@ -338,7 +338,7 @@ void layout_operator(Operator &op, AppState &app)
     if (ImGui::Combo("R Curve", &item_current, LEVEL_SCALE_CURVE_NAMES, IM_ARRAYSIZE(LEVEL_SCALE_CURVE_NAMES)))
     {
         op.level_scale_right_curve = item_current;
-        app.patch_dirty = true;
+        app.patch_dirty            = true;
     }
 
     ImGui::PopItemWidth();
@@ -348,8 +348,8 @@ void layout_operator(Operator &op, AppState &app)
 
 void draw_algorithm(AppState& app, SynthState& synth);
 
-//Right side pane: pitch envelope, lfo settings, algorithm
-void layout_common(SynthState &synth, AppState &app)
+// Right side pane: pitch envelope, lfo settings, algorithm
+void layout_common(SynthState& synth, AppState& app)
 {
     ImGui::PushItemWidth(200.f);
 
@@ -357,7 +357,7 @@ void layout_common(SynthState &synth, AppState &app)
     ImGui::Text("Pitch envelope");
     layout_envelope(app, synth.pitch_env);
     Envelope::draw_envelope("envelope", synth.pitch_env, ImVec2(200.f, 75.f));
-    envelope_copy_paste_context_menu("copypaste_env", app, synth.pitch_env); //for the envelope graphic itself
+    envelope_copy_paste_context_menu("copypaste_env", app, synth.pitch_env); // for the envelope graphic itself
     ImGui::PopItemWidth();
 
     ImGui::Separator();
@@ -373,7 +373,7 @@ void layout_common(SynthState &synth, AppState &app)
     int item_current = synth.lfo_wave;
     if (ImGui::Combo("Wave", &item_current, LFO_WAVE_NAMES, IM_ARRAYSIZE(LFO_WAVE_NAMES)))
     {
-        synth.lfo_wave = item_current;
+        synth.lfo_wave  = item_current;
         app.patch_dirty = true;
     }
 
@@ -384,10 +384,10 @@ void layout_common(SynthState &synth, AppState &app)
     app.patch_dirty |= drag_u8("Speed", synth.lfo_speed);
     app.patch_dirty |= drag_u8("Pitch Mod Depth", synth.lfo_pitch_mod_depth);
 
-    //Transpose
+    // Transpose
     {
-        static const char *transpose_labels[] = {"C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"};
-        int current_tp = synth.transpose;
+        static const char* transpose_labels[] = { "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B" };
+        int                current_tp         = synth.transpose;
         std::ostringstream oss;
         oss << transpose_labels[current_tp % 12] << current_tp / 12 + 1 << " (%d)";
 
@@ -415,14 +415,14 @@ void layout_common(SynthState &synth, AppState &app)
     ImGui::PopItemWidth();
 }
 
-//Main menu bar
+// Main menu bar
 void layout_menu_bar(AppState& app, SynthState& synth)
 {
     if (ImGui::BeginMenuBar())
     {
         if (ImGui::BeginMenu("File"))
         {
-            const char* file_filter[] = { "*.txt" };
+            const char* file_filter[]     = { "*.txt" };
             const char* file_filter_syx[] = { "*.syx" };
 
             if (ImGui::MenuItem("Init Patch"))
@@ -430,13 +430,13 @@ void layout_menu_bar(AppState& app, SynthState& synth)
                 init_patch(app);
             }
 
-            //Init all 32 patches
+            // Init all 32 patches
             /*if (ImGui::MenuItem("Init All"))
             {
                 init_all(app);
             }*/
 
-            //Load from txt
+            // Load from txt
             if (ImGui::MenuItem("Load preset"))
             {
                 const char* load_file_name = tinyfd_openFileDialog("Load preset", "presets/preset.txt", 1, file_filter, "Preset file", 0);
@@ -448,7 +448,7 @@ void layout_menu_bar(AppState& app, SynthState& synth)
                 }
             }
 
-            //Save to txt
+            // Save to txt
             if (ImGui::MenuItem("Save preset"))
             {
                 std::string patch_name = "presets/preset.txt";
@@ -464,14 +464,14 @@ void layout_menu_bar(AppState& app, SynthState& synth)
                 }
             }
 
-            //Load sysex bank
+            // Load sysex bank
             if (ImGui::MenuItem("Load .SYX"))
             {
                 const char* load_file_name = tinyfd_openFileDialog("Load .SYX", "presets/preset.syx", 1, file_filter_syx, "Sysex file", 0);
                 if (load_file_name != nullptr)
                 {
                     app.current_patch = 0;
-                    synth = app.patches[0];
+                    synth             = app.patches[0];
 
                     const std::string error = Fileops::load_from_syx_file(load_file_name, app.patches);
 
@@ -487,7 +487,7 @@ void layout_menu_bar(AppState& app, SynthState& synth)
                 }
             }
 
-            //Save sysex bank
+            // Save sysex bank
             if (ImGui::MenuItem("Save .SYX"))
             {
                 const char* save_file_name = tinyfd_saveFileDialog("Save preset", "presets/preset.syx", 1, file_filter_syx, "Sysex file");
@@ -503,26 +503,32 @@ void layout_menu_bar(AppState& app, SynthState& synth)
                 }
             }
 
-            //Send&save all 32 patches
+            // Send&save all 32 patches
             if (ImGui::MenuItem("Send all patches..."))
             {
                 app.show_bulk_dump_window = true;
             }
             ImGui::Separator();
 
-            if (ImGui::MenuItem("Options...")) { app.show_options = true; }
-            if (ImGui::MenuItem("Quit", "Alt+F4")) { app.quit_requested = true; }
+            if (ImGui::MenuItem("Options..."))
+            {
+                app.show_options = true;
+            }
+            if (ImGui::MenuItem("Quit", "Alt+F4"))
+            {
+                app.quit_requested = true;
+            }
             ImGui::EndMenu();
         }
         ImGui::EndMenuBar();
     }
 }
 
-//Bottom status bar with midi status and send velocity checkbox
+// Bottom status bar with midi status and send velocity checkbox
 void layout_status_bar(AppState& app_state)
 {
-    ImGuiContext& g = *GImGui;
-    const float height = g.NextWindowData.MenuBarOffsetMinVal.y + g.FontBaseSize + g.Style.FramePadding.y + ImGui::GetTextLineHeight();
+    ImGuiContext& g                      = *GImGui;
+    const float   height                 = g.NextWindowData.MenuBarOffsetMinVal.y + g.FontBaseSize + g.Style.FramePadding.y + ImGui::GetTextLineHeight();
     g.NextWindowData.MenuBarOffsetMinVal = ImVec2(g.Style.DisplaySafeAreaPadding.x, ImMax(g.Style.DisplaySafeAreaPadding.y - g.Style.FramePadding.y, 0.0f));
     ImGui::SetNextWindowPos(ImVec2(0.0f, g.IO.DisplaySize.y - height));
     ImGui::SetNextWindowSize(ImVec2(g.IO.DisplaySize.x, height));
@@ -531,7 +537,7 @@ void layout_status_bar(AppState& app_state)
     const ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollbar;
     ImGui::Begin("##StatusBar", NULL, window_flags);
     {
-        const bool midi_in_ok = app_state.midi_in.isPortOpen();
+        const bool midi_in_ok  = app_state.midi_in.isPortOpen();
         const bool midi_out_ok = app_state.midi_out.isPortOpen();
         ImGui::Text("Midi in: %s", midi_in_ok ? "OK" : "NO");
 
@@ -560,7 +566,7 @@ void layout_status_bar(AppState& app_state)
     g.NextWindowData.MenuBarOffsetMinVal = ImVec2(0.0f, 0.0f);
 }
 
-//Left pane patch list
+// Left pane patch list
 void layout_patch_list(AppState& app)
 {
     int i = 0;
@@ -580,8 +586,8 @@ void layout_patch_list(AppState& app)
     }
 }
 
-//Visualize the algorithm: the layout has already been defined
-//in the data so here we just interpret it
+// Visualize the algorithm: the layout has already been defined
+// in the data so here we just interpret it
 void draw_algorithm(AppState& app, SynthState& synth)
 {
     if (synth.algorithm > app.algorithms.size())
@@ -593,21 +599,21 @@ void draw_algorithm(AppState& app, SynthState& synth)
 
     ImDrawList* draw_list = ImGui::GetWindowDrawList();
 
-    const ImVec2 curpos = ImGui::GetCursorScreenPos() + ImVec2(0.f, 25.f);
-    const float op_width = ALGO_BOX_SIZE;
+    const ImVec2 curpos     = ImGui::GetCursorScreenPos() + ImVec2(0.f, 25.f);
+    const float  op_width   = ALGO_BOX_SIZE;
     const ImVec2 label_size = ImGui::CalcTextSize("8");
-    const float pad_h = (op_width - label_size.x) / 2.f;
-    const float pad_v = (op_width - label_size.y) / 2.f;
-    //Draw operator boxes
+    const float  pad_h      = (op_width - label_size.x) / 2.f;
+    const float  pad_v      = (op_width - label_size.y) / 2.f;
+    // Draw operator boxes
     for (int i = 0; i < 6; i++)
     {
-        const Algorithm::OperatorNode& op = algo.operators[i];
-        const float adjx = op.pos_x;
-        const float adjy = op.pos_y;
-        const ImVec2 pos = curpos + ImVec2(float(adjx * op_width), float(adjy * op_width));
-        ImU32 op_color = op.is_carrier ? COLOR_CARRIER : COLOR_MODULATOR;
-        const ImU32 op_border_color = op.is_carrier ? COLOR_CARRIER : COLOR_MODULATOR;
-        //Draw disabled operator slightly translucent
+        const Algorithm::OperatorNode& op              = algo.operators[i];
+        const float                    adjx            = op.pos_x;
+        const float                    adjy            = op.pos_y;
+        const ImVec2                   pos             = curpos + ImVec2(float(adjx * op_width), float(adjy * op_width));
+        ImU32                          op_color        = op.is_carrier ? COLOR_CARRIER : COLOR_MODULATOR;
+        const ImU32                    op_border_color = op.is_carrier ? COLOR_CARRIER : COLOR_MODULATOR;
+        // Draw disabled operator slightly translucent
         if (!synth.get_operator(i).is_on)
         {
             op_color = 0x44000000 | (op_color & 0x00ffffff);
@@ -615,11 +621,11 @@ void draw_algorithm(AppState& app, SynthState& synth)
         draw_list->AddRectFilled(ImVec2(pos.x, pos.y), ImVec2(pos.x + op_width, pos.y + op_width), op_color);
         draw_list->AddRect(ImVec2(pos.x, pos.y), ImVec2(pos.x + op_width, pos.y + op_width), op_border_color);
         static char buf[2];
-        ImFormatString(buf, IM_ARRAYSIZE(buf), "%d", i+1);
+        ImFormatString(buf, IM_ARRAYSIZE(buf), "%d", i + 1);
         draw_list->AddText(ImVec2(pos.x + pad_h, pos.y + pad_v), IM_COL32(255, 255, 255, 255), buf);
     }
 
-    //Draw lines connecting operators
+    // Draw lines connecting operators
     for (const Algorithm::Line& line : algo.lines)
     {
         const ImVec2 offset = curpos;
@@ -627,24 +633,24 @@ void draw_algorithm(AppState& app, SynthState& synth)
     }
 }
 
-//Initial window setup
+// Initial window setup
 GLFWwindow* setup_window()
 {
     glfwSetErrorCallback(glfw_error_callback);
     if (!glfwInit())
         return nullptr;
 
-    // Decide GL+GLSL versions
+        // Decide GL+GLSL versions
 #if __APPLE__
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);  // 3.2+ only
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);            // Required on Mac
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); // 3.2+ only
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);           // Required on Mac
 #else
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
-    //glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);  // 3.2+ only
-    //glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);            // 3.0+ only
+    // glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);  // 3.2+ only
+    // glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);            // 3.0+ only
 #endif
 
     glfwWindowHint(GLFW_MAXIMIZED, 1);
@@ -688,10 +694,10 @@ void on_midi_ports_changed(AppState& app_state, const Settings& settings)
     open_midi_port(settings.get_midi_in_name(), app_state.midi_in);
 }
 
-//Confirmation window for the buld send feature, as it's destructive
+// Confirmation window for the buld send feature, as it's destructive
 void layout_bulk_dump_window(AppState& app_state)
 {
-    if(!ImGui::IsPopupOpen("Send all patches"))
+    if (!ImGui::IsPopupOpen("Send all patches"))
     {
         ImGui::OpenPopup("Send all patches");
     }
@@ -716,7 +722,7 @@ void layout_bulk_dump_window(AppState& app_state)
     ImGui::EndPopup();
 }
 
-//Generic error window, shows the last error from message stack
+// Generic error window, shows the last error from message stack
 void layout_error_window(AppState& app_state)
 {
     if (app_state.error_messages.empty())
@@ -766,13 +772,13 @@ int main(int, char**)
     ImGuiIO& IO = ImGui::GetIO();
 
     ImGui::StyleColorsClassic();
-    IO.IniFilename = NULL; //prevent imgui from saving settings.ini
+    IO.IniFilename = NULL; // prevent imgui from saving settings.ini
 
     // Setup Platform/Renderer bindings
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     ImGui_ImplOpenGL3_Init(glsl_version);
 
-    //Support loading the included font from a couple of places
+    // Support loading the included font from a couple of places
     ImFont* main_font = nullptr;
     if (Fileops::file_exists("DroidSans.ttf"))
     {
@@ -787,19 +793,19 @@ int main(int, char**)
 
     AppState app_state(window);
     app_state.send_velocity = settings.get_send_velocity();
-    app_state.algorithms = Algorithm::build_algorithms();
+    app_state.algorithms    = Algorithm::build_algorithms();
 
     if (main_font == nullptr)
     {
         app_state.push_error_message("Could not load font DroidSans.ttf, application will not look as intended");
     }
 
-    //First run, show setup dialog
+    // First run, show setup dialog
     app_state.show_options = settings.get_midi_in_name().empty() && settings.get_midi_out_name().empty();
 
     setup_midi_initial(app_state, settings);
 
-    //Load the last edited patch
+    // Load the last edited patch
     {
         SynthState& synth_state = app_state.patches[0];
         Fileops::load_from_disk("lastpreset.txt", synth_state);
@@ -811,7 +817,7 @@ int main(int, char**)
     {
         glfwPollEvents();
 
-        //support quick escape when debugging
+        // support quick escape when debugging
 #ifndef NDEBUG
         if (ImGui::IsKeyReleased(GLFW_KEY_ESCAPE))
         {
@@ -824,23 +830,22 @@ int main(int, char**)
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
-        const ImGuiContext& g = *GImGui;
-        const float status_bar_height = g.FontBaseSize + g.Style.FramePadding.y + ImGui::GetTextLineHeight();
+        const ImGuiContext& g                 = *GImGui;
+        const float         status_bar_height = g.FontBaseSize + g.Style.FramePadding.y + ImGui::GetTextLineHeight();
 
         ImGui::SetNextWindowPos(ImVec2(0.0f, 0.0f), ImGuiCond_Always);
         ImGui::SetNextWindowSize(ImVec2(IO.DisplaySize.x, IO.DisplaySize.y - status_bar_height), ImGuiCond_Always);
-        const ImGuiWindowFlags main_window_flags = ImGuiWindowFlags_NoMove | ImGuiWindowFlags_MenuBar
-            | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize;
+        const ImGuiWindowFlags main_window_flags = ImGuiWindowFlags_NoMove | ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize;
         ImGui::Begin("MainWindow", 0, main_window_flags);
 
         layout_status_bar(app_state);
         layout_menu_bar(app_state, app_state.get_current_patch());
 
-        const float left_pane_width = 210.f;
-        const float right_pane_width = 400.f;
+        const float left_pane_width       = 210.f;
+        const float right_pane_width      = 400.f;
         const float operator_column_width = 300.f;
 
-        if (ImGui::BeginChild("LeftPane", ImVec2(left_pane_width,0), false, ImGuiWindowFlags_AlwaysAutoResize))
+        if (ImGui::BeginChild("LeftPane", ImVec2(left_pane_width, 0), false, ImGuiWindowFlags_AlwaysAutoResize))
         {
             ImGui::BeginChild("PatchList", ImVec2(200, 0), true);
             layout_patch_list(app_state);
@@ -850,13 +855,13 @@ int main(int, char**)
         ImGui::EndChild();
 
         ImGui::SameLine();
-        
+
         const float max_patch_window_width = IO.DisplaySize.x - left_pane_width - right_pane_width;
         ImGui::SetNextWindowSizeConstraints(ImVec2(0, 0), ImVec2(max_patch_window_width, -1));
 
-        //Draw the 6 operator view: we support 3 and 2 column layout depending
-        //on the window size
-        if (ImGui::BeginChild("Patch", ImVec2(0,0), true))
+        // Draw the 6 operator view: we support 3 and 2 column layout depending
+        // on the window size
+        if (ImGui::BeginChild("Patch", ImVec2(0, 0), true))
         {
             SynthState& synth_state = app_state.get_current_patch();
 
@@ -877,7 +882,7 @@ int main(int, char**)
                 ImGui::SetColumnWidth(1, operator_column_width);
                 ImGui::SetColumnWidth(2, operator_column_width);
 
-                //operators 1-3
+                // operators 1-3
                 layout_operator(synth_state.op1, app_state);
                 ImGui::NextColumn();
                 layout_operator(synth_state.op2, app_state);
@@ -885,7 +890,7 @@ int main(int, char**)
                 layout_operator(synth_state.op3, app_state);
                 ImGui::Separator();
 
-                //operators 4-6
+                // operators 4-6
                 ImGui::NextColumn();
                 layout_operator(synth_state.op4, app_state);
                 ImGui::NextColumn();
@@ -898,14 +903,14 @@ int main(int, char**)
                 ImGui::SetColumnWidth(0, operator_column_width);
                 ImGui::SetColumnWidth(1, operator_column_width);
 
-                //op 1-2
+                // op 1-2
                 layout_operator(synth_state.op1, app_state);
                 ImGui::NextColumn();
                 layout_operator(synth_state.op2, app_state);
 
                 ImGui::Separator();
 
-                //op 3-4
+                // op 3-4
                 ImGui::NextColumn();
                 layout_operator(synth_state.op3, app_state);
                 ImGui::NextColumn();
@@ -913,7 +918,7 @@ int main(int, char**)
 
                 ImGui::Separator();
 
-                //op 5-6
+                // op 5-6
                 ImGui::NextColumn();
                 layout_operator(synth_state.op5, app_state);
                 ImGui::NextColumn();
@@ -921,20 +926,19 @@ int main(int, char**)
             }
 
             ImGui::Columns(1);
-
         }
         ImGui::EndChild();
 
         ImGui::SameLine();
-        if (ImGui::BeginChild("RightPane"), ImVec2(right_pane_width,0), false, ImGuiWindowFlags_AlwaysAutoResize)
-        {            
+        if (ImGui::BeginChild("RightPane"), ImVec2(right_pane_width, 0), false, ImGuiWindowFlags_AlwaysAutoResize)
+        {
             layout_common(app_state.get_current_patch(), app_state);
         }
         ImGui::EndChild();
 
-        ImGui::End(); //main window
+        ImGui::End(); // main window
 
-        //Show the error window, options window or bulk send confirmation window
+        // Show the error window, options window or bulk send confirmation window
         if (app_state.error_messages.size() > 0)
         {
             layout_error_window(app_state);
@@ -948,23 +952,23 @@ int main(int, char**)
             layout_bulk_dump_window(app_state);
         }
 
-        //Imgui demo window is handy for development
+        // Imgui demo window is handy for development
         /*bool show_demo_window = true;
         if (show_demo_window)
             ImGui::ShowDemoWindow(&show_demo_window);*/
 
-        //Reset midi ports
+        // Reset midi ports
         if (app_state.midi_settings_dirty)
         {
             on_midi_ports_changed(app_state, settings);
             app_state.midi_settings_dirty = false;
         }
 
-        //Send the current patch
+        // Send the current patch
         if (app_state.patch_dirty)
         {
             const int checksum = app_state.get_current_patch().send(app_state.midi_out);
-            //std::cout << "checksum " << std::hex << checksum << std::endl;
+            // std::cout << "checksum " << std::hex << checksum << std::endl;
             app_state.patch_dirty = false;
         }
 
@@ -980,7 +984,7 @@ int main(int, char**)
         glfwSwapBuffers(window);
     }
 
-    //Save the last preset to disk on exit
+    // Save the last preset to disk on exit
     SynthState& synth_state = app_state.get_current_patch();
     Fileops::save_to_disk("lastpreset.txt", synth_state);
 

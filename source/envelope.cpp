@@ -5,18 +5,18 @@
 #endif
 #include "imgui_internal.h"
 
-#pragma warning(disable:4996) //crt_secure_no_warnings
+#pragma warning(disable : 4996) // crt_secure_no_warnings
 
-//Plot the envelope graph
+// Plot the envelope graph
 void Envelope::draw_envelope(const char* label, const Envelope& env, ImVec2 frame_size)
 {
     ImGuiWindow* window = ImGui::GetCurrentWindow();
     if (window->SkipItems)
         return;
 
-    ImGuiContext& g = *GImGui;
+    ImGuiContext&     g     = *GImGui;
     const ImGuiStyle& style = g.Style;
-    const ImGuiID id = window->GetID(label);
+    const ImGuiID     id    = window->GetID(label);
 
     const ImVec2 label_size = ImGui::CalcTextSize(label, NULL, true);
     if (frame_size.x == 0.0f)
@@ -33,32 +33,32 @@ void Envelope::draw_envelope(const char* label, const Envelope& env, ImVec2 fram
 
     ImGui::RenderFrame(frame_bb.Min, frame_bb.Max, ImGui::GetColorU32(ImGuiCol_FrameBg), true, style.FrameRounding);
 
-    //min = top left corner, +y downwards
-    const float EMAX = 99.f;
-    const float l1 = 1.f - env.l1 / EMAX;
-    const float l2 = 1.f - env.l2 / EMAX;
-    const float l3 = 1.f - env.l3 / EMAX;
-    const float l4 = 1.f - env.l4 / EMAX;
-    const int color = ImGui::GetColorU32(ImGuiCol_PlotHistogram);
+    // min = top left corner, +y downwards
+    const float EMAX  = 99.f;
+    const float l1    = 1.f - env.l1 / EMAX;
+    const float l2    = 1.f - env.l2 / EMAX;
+    const float l3    = 1.f - env.l3 / EMAX;
+    const float l4    = 1.f - env.l4 / EMAX;
+    const int   color = ImGui::GetColorU32(ImGuiCol_PlotHistogram);
 
-    const u8 sus_len = 80;
-    const float max = static_cast<float>((99 - env.r1) + (99 - env.r2) + (99 - env.r3) + sus_len + (99 - env.r4));
-    const float r1 = (99 - env.r1) / max;
-    const float r2 = r1 + (99 - env.r2) / max;
-    const float r3 = r2 + (99 - env.r3) / max;
-    const float sus = r3 + sus_len / max;
+    const u8    sus_len = 80;
+    const float max     = static_cast<float>((99 - env.r1) + (99 - env.r2) + (99 - env.r3) + sus_len + (99 - env.r4));
+    const float r1      = (99 - env.r1) / max;
+    const float r2      = r1 + (99 - env.r2) / max;
+    const float r3      = r2 + (99 - env.r3) / max;
+    const float sus     = r3 + sus_len / max;
 
-    window->DrawList->PathLineTo(ImLerp(frame_bb.Min, frame_bb.Max, ImVec2(0.f,l4)));
-    window->DrawList->PathLineTo(ImLerp(frame_bb.Min, frame_bb.Max, ImVec2(r1,l1)));
-    window->DrawList->PathLineTo(ImLerp(frame_bb.Min, frame_bb.Max, ImVec2(r2,l2)));
-    window->DrawList->PathLineTo(ImLerp(frame_bb.Min, frame_bb.Max, ImVec2(r3,l3)));
-    window->DrawList->PathLineTo(ImLerp(frame_bb.Min, frame_bb.Max, ImVec2(sus,l3)));
-    window->DrawList->PathLineTo(ImLerp(frame_bb.Min, frame_bb.Max, ImVec2(1.f,l4)));
+    window->DrawList->PathLineTo(ImLerp(frame_bb.Min, frame_bb.Max, ImVec2(0.f, l4)));
+    window->DrawList->PathLineTo(ImLerp(frame_bb.Min, frame_bb.Max, ImVec2(r1, l1)));
+    window->DrawList->PathLineTo(ImLerp(frame_bb.Min, frame_bb.Max, ImVec2(r2, l2)));
+    window->DrawList->PathLineTo(ImLerp(frame_bb.Min, frame_bb.Max, ImVec2(r3, l3)));
+    window->DrawList->PathLineTo(ImLerp(frame_bb.Min, frame_bb.Max, ImVec2(sus, l3)));
+    window->DrawList->PathLineTo(ImLerp(frame_bb.Min, frame_bb.Max, ImVec2(1.f, l4)));
 
     window->DrawList->PathStroke(color, false, 2.f);
 }
 
-//For copypaste support
+// For copypaste support
 std::string Envelope::to_string() const
 {
     char buf[128];
@@ -66,7 +66,7 @@ std::string Envelope::to_string() const
     return buf;
 }
 
-//For copypaste support
+// For copypaste support
 void Envelope::from_string(const std::string& string)
 {
     int v[8] = {};

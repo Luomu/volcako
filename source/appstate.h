@@ -1,9 +1,9 @@
 #pragma once
 
-#include <vector>
-#include "rtmidi/RtMidi.h"
 #include "algorithm.h"
 #include "common.h"
+#include "rtmidi/RtMidi.h"
+#include <vector>
 
 struct GLFWwindow;
 
@@ -11,22 +11,22 @@ struct GLFWwindow;
 class AppState
 {
 public:
-    bool show_options = false;
+    bool show_options          = false;
     bool show_bulk_dump_window = false;
-    bool patch_dirty = false;
-    bool quit_requested = false;
-    bool send_velocity = false;
-    bool midi_settings_dirty = false;
+    bool patch_dirty           = false;
+    bool quit_requested        = false;
+    bool send_velocity         = false;
+    bool midi_settings_dirty   = false;
 
-    RtMidiOut midi_out = RtMidiOut(RtMidi::WINDOWS_MM);
-    RtMidiIn midi_in = RtMidiIn(RtMidi::WINDOWS_MM);
+    RtMidiOut              midi_out = RtMidiOut(RtMidi::WINDOWS_MM);
+    RtMidiIn               midi_in  = RtMidiIn(RtMidi::WINDOWS_MM);
     std::vector<Algorithm> algorithms;
 
     std::vector<std::string> midi_out_port_names;
     std::vector<std::string> midi_in_port_names;
 
-    //patch library
-    int current_patch = 0;
+    // patch library
+    int                     current_patch = 0;
     std::vector<SynthState> patches;
 
     std::vector<std::string> error_messages;

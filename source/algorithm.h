@@ -4,14 +4,14 @@
 /** Data for the graphical representation of an algorithm */
 struct Algorithm
 {
-    //Operators, carriers are always on bottom line,
-    //rest are modulators
+    // Operators, carriers are always on bottom line,
+    // rest are modulators
     struct OperatorNode
     {
-        int id = 0;
-        bool is_carrier = false;
-        float pos_x = 0;
-        float pos_y = 0;
+        int   id         = 0;
+        bool  is_carrier = false;
+        float pos_x      = 0;
+        float pos_y      = 0;
 
         std::vector<int> modulators;
 
@@ -22,17 +22,17 @@ struct Algorithm
         }
     };
 
-    //Connecting lines
+    // Connecting lines
     struct Line
     {
         float from_x = 0;
         float from_y = 0;
-        float to_x = 0;
-        float to_y = 0;
+        float to_x   = 0;
+        float to_y   = 0;
     };
 
     std::vector<OperatorNode> operators;
-    std::vector<Line> lines;
+    std::vector<Line>         lines;
 
     Algorithm()
     {
