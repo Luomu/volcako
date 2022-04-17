@@ -23,6 +23,12 @@ set(SOURCES
     libs/gl3w/GL/gl3w.c
 )
 
+set_source_files_properties(
+  libs/tinyfiledialogs/tinyfiledialogs.c
+  PROPERTIES
+  COMPILE_FLAGS /wd4267
+)
+
 add_executable(${PROJECT_NAME} WIN32 ${SOURCES})
 
 target_include_directories(${PROJECT_NAME} PRIVATE

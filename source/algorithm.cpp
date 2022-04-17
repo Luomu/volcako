@@ -15,7 +15,7 @@ public:
         float carrier_max = -100.f;
 
         Algorithm algo;
-        const int height = layout.size() / width;
+        const int height = int(layout.size()) / width;
         for (int col = 0; col < width; col++)
         {
             const float adjcol  = col * 2.f; // add space between cells
