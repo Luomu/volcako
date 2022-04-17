@@ -6,6 +6,7 @@
 #include "common.h"
 #include "filesops.h"
 #include "settings.h"
+#include <GLFW/glfw3.h>
 #include <imgui.h>
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
@@ -14,12 +15,6 @@
 #include <tinyfiledialogs/tinyfiledialogs.h>
 
 #pragma warning(disable : 4996) // crt_secure_no_warnings
-
-#ifndef IMGUI_IMPL_OPENGL_LOADER_GL3W
-#define IMGUI_IMPL_OPENGL_LOADER_GL3W
-#endif
-#include <GL/gl3w.h>
-#include <GLFW/glfw3.h>
 
 // The included glfw3.lib is from vs2010 era to maximize compatibility, and requires this pragma for newer compilers
 #if defined(_MSC_VER) && (_MSC_VER >= 1900) && !defined(IMGUI_DISABLE_WIN32_FUNCTIONS)
@@ -755,14 +750,6 @@ int main(int, char**)
     if (window == nullptr)
     {
         fprintf(stderr, "Failed to initialize GLFW Window\n");
-        return 1;
-    }
-
-    // Initialize OpenGL loader
-    const bool err = gl3wInit() != 0;
-    if (err)
-    {
-        fprintf(stderr, "Failed to initialize OpenGL loader!\n");
         return 1;
     }
 
