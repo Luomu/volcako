@@ -1,6 +1,12 @@
-.vs
-obj/
-bin/
+*.exe
+*.ilk
+*.pdb
 *.sln
 *.vcxproj
 *.vcxproj.filters
+.vs
+bin/
+lastpreset.txt
+obj/
+out/
+settings.ini

@@ -1,5 +1,7 @@
 # Volcako
 
+## Note: this project has not been tested with Volca FM 2 (released 2022)!
+
 This is a realtime editor for the Korg Volca FM. It exposes all of Volca's parameters in one ~~ugly~~ functional screen. In addition it can load and save entire 32 voice banks in .SYX format. If you have a midi input device connected, the keypresses will be routed to Volca, optionally with note velocity!
 
 ![Screenshot](docs/screenshot.png)
@@ -13,13 +15,15 @@ Windows release can be found at: https://github.com/Luomu/volcako/releases/downl
 
 ## Building
 
-Only a Windows build has been made so far. However, all the libraries used are cross platform so a Mac/Linux port should be a breeze.
+Only a Windows build has been made so far. However, all the libraries used are cross platform so a Mac/Linux port should be a breeze. You have two choices: [CMake](https://cmake.org/) and [Genie](https://github.com/bkaradzic/genie).
 
-First you need to generate the makefile/solution for the IDE of your choice. For that we use [Genie](https://github.com/bkaradzic/genie). To create .sln for VS 2019, run this in the root directory:
+Using CMake is simple with Visual Studio 2022 (Community): Just open the folder and it shoudl run the CMake configuration. Then select Build->Build all.
+
+With genie you need to generate the makefile/solution for the IDE of your choice. To create .sln for VS 2019, run this in the root directory:
 
 ```genie vs2019```
 
-Precompiled Windows executable: https://github.com/bkaradzic/bx/raw/master/tools/bin/windows/genie.exe
+Precompiled Genie Windows executable: https://github.com/bkaradzic/bx/raw/master/tools/bin/windows/genie.exe
 
 ## Libraries used
 dear imgui - https://github.com/ocornut/imgui
