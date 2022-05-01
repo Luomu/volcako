@@ -7,8 +7,9 @@
 #include "algorithm.h"
 #include "appstate.h"
 #include "common.h"
-#include "filesops.h"
+#include "fileops.h"
 #include "settings.h"
+
 #include <GLFW/glfw3.h>
 #include <imgui.h>
 #include <imgui_impl_glfw.h>
@@ -102,6 +103,7 @@ void open_midi_port(const std::string& port_name, RtMidi& midi_interface)
 
 void copy_to_clipboard(const AppState& app, const std::string& text)
 {
+    // could use ImGui::SetClipboardText now
     glfwSetClipboardString(app.window, text.c_str());
 }
 

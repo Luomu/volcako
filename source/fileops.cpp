@@ -1,10 +1,8 @@
 /*
  * Licensed under MIT. See LICENSE.txt for details.
  */
-#pragma once
-#include "common.h"
-#include "imgui_internal.h"
-#include "inipp/inipp.h"
+
+#include "fileops.h"
 #include "sysex.h"
 #include <fstream>
 
@@ -13,7 +11,6 @@
 #pragma warning(disable : 4996) // 'This function or variable may be unsafe': strcpy, strdup, sprintf, vsnprintf, sscanf, fopen
 #endif
 
-// Saving and loading patch data to/from .txt and .syx
 namespace Fileops
 {
     void add_line(ImGuiTextBuffer& buf, const char* name, int value)
@@ -46,7 +43,7 @@ namespace Fileops
 #undef SET
     }
 
-    void write_preset(ImGuiTextBuffer& buf, SynthState& synth)
+    void write_preset(ImGuiTextBuffer& buf, const SynthState& synth)
     {
         buf.append("[patch]\n");
         buf.appendf("name=%s\n", synth.patch_name);
@@ -72,7 +69,7 @@ namespace Fileops
         write_operator(buf, synth.op6);
     }
 
-    const char* save_preset_to_memory(size_t* out_size, SynthState& synth)
+    const char* save_preset_to_memory(size_t* out_size, const SynthState& synth)
     {
         static ImGuiTextBuffer buf;
         buf.Buf.resize(0);
@@ -258,7 +255,7 @@ namespace Fileops
         return "";
     }
 
-    static bool file_exists(char const* const filename)
+    bool file_exists(char const* const filename)
     {
         FILE* lIn;
         if (!filename || !strlen(filename))

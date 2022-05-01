@@ -9,6 +9,8 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 set(SOURCES
     source/algorithm.cpp
     source/envelope.cpp
+    source/fileops.cpp
+    source/fileops.h
     source/main.cpp
     source/settings.cpp
     source/sysex.cpp
