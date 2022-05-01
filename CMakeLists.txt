@@ -14,6 +14,7 @@ set(SOURCES
     source/main.cpp
     source/settings.cpp
     source/sysex.cpp
+    source/synthstate.cpp
     libs/imgui/imgui.cpp
     libs/imgui/imgui_demo.cpp
     libs/imgui/imgui_draw.cpp

@@ -19,6 +19,20 @@ Some nice to know things:
 
 Windows release can be found at: https://github.com/Luomu/volcako/releases/download/r1/volcako-r1.zip
 
+## Release notes
+
+### R2
+
+```
+[New] Allow copying and pasting presets (right-click preset browser)
+```
+
+### R1 (November 2019)
+
+```
+Initial release
+```
+
 ## Building
 
 Only a Windows build has been made so far. However, all the libraries used are cross platform so a Mac/Linux port should be a breeze. You have two choices: [CMake](https://cmake.org/) and [Genie](https://github.com/bkaradzic/genie).

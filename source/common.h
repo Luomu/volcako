@@ -2,8 +2,9 @@
  * Licensed under MIT. See LICENSE.txt for details.
  */
 #pragma once
+
 #include "envelope.h"
-#include "rtmidi/RtMidi.h"
+#include <rtmidi/RtMidi.h>
 
 // Some common includes in this file
 
@@ -130,7 +131,9 @@ struct SynthState
     // write a 32 voice sysex bank, header is written when voice_index = 0
     // checksum is written when voice_index = 31
     // data buffer must be 4104 bytes in size!
-    void to_sysex_bank(u8* sysex, int voice_index) const;
+    void                      to_sysex_bank(u8* sysex, int voice_index) const;
+    [[nodiscard]] std::string to_clipboard_string() const;
+    void                      from_clipboard_string(const std::string& str);
 
     const Operator& get_operator(int idx) const
     {

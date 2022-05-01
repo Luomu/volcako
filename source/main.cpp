@@ -570,9 +570,9 @@ void layout_status_bar(AppState& app_state)
 void layout_patch_list(AppState& app)
 {
     int i = 0;
-    for (const SynthState& patch : app.patches)
+    for (SynthState& patch : app.patches)
     {
-        char label[128];
+        static char label[32];
         sprintf(label, "%d %s", i, patch.patch_name);
         if (ImGui::Selectable(label, app.current_patch == i))
         {
@@ -582,6 +582,22 @@ void layout_patch_list(AppState& app)
                 on_active_patch_changed(app);
             }
         }
+
+        if (ImGui::BeginPopupContextItem())
+        {
+            if (ImGui::Selectable("Copy Program"))
+            {
+                const std::string str = patch.to_clipboard_string();
+                copy_to_clipboard(app, str);
+            }
+            if (ImGui::Selectable("Paste Program"))
+            {
+                const std::string cbstr = get_from_clipboard(app);
+                patch.from_clipboard_string(cbstr);
+            }
+            ImGui::EndPopup();
+        }
+
         i++;
     }
 }
@@ -950,9 +966,9 @@ int main(int, char**)
         }
 
         // Imgui demo window is handy for development
-        /*bool show_demo_window = true;
+        bool show_demo_window = false;
         if (show_demo_window)
-            ImGui::ShowDemoWindow(&show_demo_window);*/
+            ImGui::ShowDemoWindow(&show_demo_window);
 
         // Reset midi ports
         if (app_state.midi_settings_dirty)
