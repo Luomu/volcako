@@ -23,9 +23,9 @@ Windows release can be found at: https://github.com/Luomu/volcako/releases/downl
 
 ```
 R2 (Unreleased)
-[New] Allow copying and pasting presets (right-click preset browser)
-[New] Save the entire 32-preset bank on shutdown
-[New] Add Init Program to the browser right-click menu
+[New] Allow copying and pasting patches (right-click patch browser)
+[New] Save the entire patch bank on shutdown as lastbank.syx, load on startup
+[New] Add Init Patch to the browser right-click menu
 
 R1 (November 2019)
 Initial release

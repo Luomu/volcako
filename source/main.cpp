@@ -437,9 +437,9 @@ void layout_menu_bar(AppState& app, SynthState& synth)
             }*/
 
             // Load from txt
-            if (ImGui::MenuItem("Load preset"))
+            if (ImGui::MenuItem("Load patch"))
             {
-                const char* load_file_name = tinyfd_openFileDialog("Load preset", "presets/preset.txt", 1, file_filter, "Preset file", 0);
+                const char* load_file_name = tinyfd_openFileDialog("Load patch", "presets/preset.txt", 1, file_filter, "Patch preset file", 0);
                 if (load_file_name != nullptr)
                 {
                     Fileops::load_from_disk(load_file_name, synth);
@@ -449,7 +449,7 @@ void layout_menu_bar(AppState& app, SynthState& synth)
             }
 
             // Save to txt
-            if (ImGui::MenuItem("Save preset"))
+            if (ImGui::MenuItem("Save patch"))
             {
                 std::string patch_name = "presets/preset.txt";
                 if (strlen(synth.patch_name) > 0)
@@ -457,7 +457,7 @@ void layout_menu_bar(AppState& app, SynthState& synth)
                     patch_name = "presets/" + std::string(synth.patch_name) + ".txt";
                 }
 
-                const char* save_file_name = tinyfd_saveFileDialog("Save preset", patch_name.c_str(), 1, file_filter, "Preset file");
+                const char* save_file_name = tinyfd_saveFileDialog("Save patch", patch_name.c_str(), 1, file_filter, "Patch preset file");
                 if (save_file_name != nullptr)
                 {
                     Fileops::save_to_disk(save_file_name, synth);
@@ -585,17 +585,17 @@ void layout_patch_list(AppState& app)
 
         if (ImGui::BeginPopupContextItem())
         {
-            if (ImGui::Selectable("Copy Program"))
+            if (ImGui::Selectable("Copy Patch"))
             {
                 const std::string str = patch.to_clipboard_string();
                 copy_to_clipboard(app, str);
             }
-            if (ImGui::Selectable("Paste Program"))
+            if (ImGui::Selectable("Paste Patch"))
             {
                 const std::string cbstr = get_from_clipboard(app);
                 patch.from_clipboard_string(cbstr);
             }
-            if (ImGui::Selectable("Init Program"))
+            if (ImGui::Selectable("Init Patch"))
             {
                 patch = SynthState();
                 on_active_patch_changed(app);
