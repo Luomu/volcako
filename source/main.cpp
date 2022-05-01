@@ -826,7 +826,11 @@ int main(int, char**)
     // Load the last edited patch
     {
         SynthState& synth_state = app_state.patches[0];
-        Fileops::load_from_disk("lastpreset.txt", synth_state);
+        if (Fileops::file_exists("lastbank.syx"))
+            Fileops::load_from_syx_file("lastbank.syx", app_state.patches);
+        else
+            Fileops::load_from_disk("lastpreset.txt", synth_state);
+        
         on_algorithm_changed(app_state, synth_state);
     }
 
@@ -1005,6 +1009,7 @@ int main(int, char**)
     // Save the last preset to disk on exit
     SynthState& synth_state = app_state.get_current_patch();
     Fileops::save_to_disk("lastpreset.txt", synth_state);
+    Fileops::save_to_syx_file("lastbank.syx", app_state.patches);
 
     settings.set_send_velocity(app_state.send_velocity);
     settings.save_to_disk();
