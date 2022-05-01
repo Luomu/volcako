@@ -595,6 +595,11 @@ void layout_patch_list(AppState& app)
                 const std::string cbstr = get_from_clipboard(app);
                 patch.from_clipboard_string(cbstr);
             }
+            if (ImGui::Selectable("Init Program"))
+            {
+                patch = SynthState();
+                on_active_patch_changed(app);
+            }
             ImGui::EndPopup();
         }
 
