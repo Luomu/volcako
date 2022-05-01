@@ -3,7 +3,7 @@ project(volcako LANGUAGES CXX C)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup /NODEFAULTLIB:MSVCRT")
+SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /ENTRY:mainCRTStartup" )
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 
 set(SOURCES
@@ -44,5 +44,5 @@ target_include_directories(${PROJECT_NAME} PRIVATE
     libs/gl3w
 )
 
-target_link_directories(${PROJECT_NAME} PRIVATE "libs/glfw/lib-vc2010-64")
-target_link_libraries(${PROJECT_NAME} PRIVATE glfw3 winmm opengl32)
+target_link_directories(${PROJECT_NAME} PRIVATE "libs/glfw/lib-vc2022")
+target_link_libraries(${PROJECT_NAME} glfw3 winmm opengl32)

@@ -20,11 +20,6 @@
 
 #pragma warning(disable : 4996) // crt_secure_no_warnings
 
-// The included glfw3.lib is from vs2010 era to maximize compatibility, and requires this pragma for newer compilers
-#if defined(_MSC_VER) && (_MSC_VER >= 1900) && !defined(IMGUI_DISABLE_WIN32_FUNCTIONS)
-#pragma comment(lib, "legacy_stdio_definitions")
-#endif
-
 const float  ALGO_BOX_SIZE = 20.f;
 const float  FONT_SIZE     = 16.0f;
 const ImVec4 CLEAR_COLOR   = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
@@ -827,7 +822,11 @@ int main(int, char**)
     {
         SynthState& synth_state = app_state.patches[0];
         if (Fileops::file_exists("lastbank.syx"))
-            Fileops::load_from_syx_file("lastbank.syx", app_state.patches);
+        {
+            std::string load_result = Fileops::load_from_syx_file("lastbank.syx", app_state.patches);
+            if (load_result.length() > 2)
+                std::cout << load_result << std::endl;
+        }
         else
             Fileops::load_from_disk("lastpreset.txt", synth_state);
         
@@ -1009,7 +1008,9 @@ int main(int, char**)
     // Save the last preset to disk on exit
     SynthState& synth_state = app_state.get_current_patch();
     Fileops::save_to_disk("lastpreset.txt", synth_state);
-    Fileops::save_to_syx_file("lastbank.syx", app_state.patches);
+    std::string save_result = Fileops::save_to_syx_file("lastbank.syx", app_state.patches);
+    if (save_result.length() > 2)
+        std::cout << save_result << std::endl;
 
     settings.set_send_velocity(app_state.send_velocity);
     settings.save_to_disk();
