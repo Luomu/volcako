@@ -3,6 +3,7 @@
  */
 #include "sysex.h"
 #include "common.h"
+#include "synthstate.h"
 
 // Sysex conversion functions
 

@@ -9,12 +9,15 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 set(SOURCES
     source/algorithm.cpp
     source/envelope.cpp
+    source/envelope.h
     source/fileops.cpp
     source/fileops.h
     source/main.cpp
+    source/operator.h
     source/settings.cpp
-    source/sysex.cpp
     source/synthstate.cpp
+    source/synthstate.h
+    source/sysex.cpp
     libs/imgui/imgui.cpp
     libs/imgui/imgui_demo.cpp
     libs/imgui/imgui_draw.cpp

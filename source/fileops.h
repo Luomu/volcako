@@ -4,8 +4,11 @@
 #pragma once
 
 #include "common.h"
-#include "imgui_internal.h"
-#include "inipp/inipp.h"
+#include <imgui_internal.h>
+#include <inipp/inipp.h>
+
+struct Operator;
+struct SynthState;
 
 // Saving and loading patch data to/from .txt and .syx
 namespace Fileops

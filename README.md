@@ -21,15 +21,12 @@ Windows release can be found at: https://github.com/Luomu/volcako/releases/downl
 
 ## Release notes
 
-### R2
-
 ```
+R2 (Unreleased)
 [New] Allow copying and pasting presets (right-click preset browser)
-```
+[New] Save the entire 32-preset bank on shutdown
 
-### R1 (November 2019)
-
-```
+R1 (November 2019)
 Initial release
 ```
 

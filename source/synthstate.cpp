@@ -1,4 +1,4 @@
-#include "common.h"
+#include "synthstate.h"
 #include "fileops.h"
 
 #include <sstream>

@@ -5,7 +5,9 @@
 
 #include "algorithm.h"
 #include "common.h"
-#include "rtmidi/RtMidi.h"
+#include "synthstate.h"
+
+#include <rtmidi/RtMidi.h>
 #include <vector>
 
 struct GLFWwindow;

@@ -3,6 +3,8 @@
  */
 
 #include "fileops.h"
+#include "operator.h"
+#include "synthstate.h"
 #include "sysex.h"
 #include <fstream>
 
