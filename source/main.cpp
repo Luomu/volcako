@@ -974,7 +974,11 @@ int main(int, char**)
         }
 
         // Imgui demo window is handy for development
-        bool show_demo_window = false;
+        static bool show_demo_window = false;
+#ifndef NDEBUG
+        if (ImGui::IsKeyReleased(GLFW_KEY_F10))
+            show_demo_window = !show_demo_window;
+#endif
         if (show_demo_window)
             ImGui::ShowDemoWindow(&show_demo_window);
 
