@@ -6,9 +6,12 @@
 // String table - nicer to have these in one place
 namespace Strings
 {
+    constexpr auto ACTION_COPY_ENVELOPE     = "Copy Envelope";
     constexpr auto ACTION_COPY_PATCH        = "Copy Patch";
     constexpr auto ACTION_INIT_PATCH        = "Init Patch";
+    constexpr auto ACTION_PASTE_ENVELOPE    = "Paste Envelope";
     constexpr auto ACTION_PASTE_PATCH       = "Paste Patch";
+    constexpr auto ACTION_RESET_ENVELOPE    = "Reset Envelope";
     constexpr auto BUTTON_CLOSE             = "Close";
     constexpr auto BUTTON_NO                = "No";
     constexpr auto BUTTON_YES               = "Yes";

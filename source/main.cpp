@@ -177,15 +177,22 @@ void envelope_copy_paste_context_menu(const char* id, AppState& app, Envelope& e
 {
     if (ImGui::BeginPopupContextItem(id))
     {
-        if (ImGui::Selectable("Copy Envelope"))
+        if (ImGui::Selectable(Strings::ACTION_COPY_ENVELOPE))
         {
             copy_to_clipboard(app, envelope.to_string());
         }
-        if (ImGui::Selectable("Paste Envelope"))
+
+        if (ImGui::Selectable(Strings::ACTION_PASTE_ENVELOPE))
         {
             const std::string cbstr = get_from_clipboard(app);
             envelope.from_string(cbstr);
         }
+
+        if (ImGui::Selectable(Strings::ACTION_RESET_ENVELOPE))
+        {
+            envelope = Envelope();
+        }
+
         ImGui::EndPopup();
     }
 }

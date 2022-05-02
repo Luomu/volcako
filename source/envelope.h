@@ -20,6 +20,8 @@ struct Envelope
     u8 l3 = 99;
     u8 l4 = 0;
 
+    Envelope() {}
+
     Envelope(u8 r1, u8 r2, u8 r3, u8 r4, u8 l1, u8 l2, u8 l3, u8 l4)
         : r1(r1)
         , r2(r2)
