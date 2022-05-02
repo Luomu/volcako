@@ -1,6 +1,6 @@
 # Volcako
 
-## Note: this project has not been tested with Volca FM 2 (released 2022)!
+## Note: this project has not been tested with Volca FM 2 (released 2022)! Get in touch if you have one!
 
 This is a realtime editor for the Korg Volca FM. It exposes all of Volca's parameters in one ~~ugly~~ functional screen. In addition it can load and save entire 32 voice banks in .SYX format. If you have a midi input device connected, the keypresses will be routed to Volca, optionally with note velocity!
 
@@ -26,6 +26,7 @@ R2 (Unreleased)
 [New] Allow copying and pasting patches (right-click patch browser)
 [New] Save the entire patch bank on shutdown as lastbank.syx, load on startup
 [New] Add Init Patch to the browser right-click menu
+[New] EXPERIMENTAL: Add "DX7 compatibility mode" to settings: Sends sysex messages according to the original DX7 spec. Will sound wrong on Volca FM. May work with Volca FM2.
 
 R1 (November 2019)
 Initial release
@@ -53,6 +54,8 @@ inipp - https://github.com/mcmtroffaes/inipp
 rtmidi - www.music.mcgill.ca/~gary/rtmidi/
 
 tinyfiledialogs - https://sourceforge.net/projects/tinyfiledialogs/
+
+font awesome + headers - https://github.com/juliettef/IconFontCppHeaders/
 
 ## References
 Korg Volca FM Midi implementation - www.korg.com/us/support/download/manual/0/558/2963/
