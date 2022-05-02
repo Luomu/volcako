@@ -15,6 +15,11 @@ void SynthState::from_clipboard_string(const std::string& str)
 
     std::stringstream stream(str);
     ini.parse(stream);
+    if (!ini.errors.empty() || ini.sections.size() != 7)
+    {
+        std::cerr << "Clipboard string is not a valid patch definition" << std::endl;
+        return;
+    }
 
     Fileops::load_common(ini.sections["patch"], *this);
 
