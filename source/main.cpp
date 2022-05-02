@@ -11,6 +11,7 @@
 #include "settings.h"
 
 #include <GLFW/glfw3.h>
+#include <IconsFontAwesome6.h>
 #include <imgui.h>
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
@@ -765,6 +766,43 @@ void layout_error_window(AppState& app_state)
     ImGui::EndPopup();
 }
 
+void load_fonts(const ImGuiIO& IO, AppState& app_state)
+{
+    ImFont* main_font = nullptr;
+    ImFont* icon_font = nullptr;
+
+    const std::vector<std::string> font_locations = {
+        "",
+        "misc/fonts/",
+        "../misc/fonts/"
+    };
+
+    for (const auto& location : font_locations)
+    {
+        const std::string main_font_path = location + "DroidSans.ttf";
+        const std::string icon_font_path = location + FONT_ICON_FILE_NAME_FAS;
+        if (main_font == nullptr && Fileops::file_exists(main_font_path.c_str()))
+        {
+            main_font = IO.Fonts->AddFontFromFileTTF(main_font_path.c_str(), FONT_SIZE);
+        }
+
+        if (icon_font == nullptr && Fileops::file_exists(icon_font_path.c_str()))
+        {
+            static const ImWchar icons_ranges[] = { ICON_MIN_FA, ICON_MAX_FA, 0 };
+            ImFontConfig         icons_config;
+            icons_config.MergeMode  = true;
+            icons_config.PixelSnapH = true;
+            icon_font               = IO.Fonts->AddFontFromFileTTF(icon_font_path.c_str(), 16.0f, &icons_config, icons_ranges);
+        }
+    }
+
+    if (main_font == nullptr)
+        app_state.push_error_message("Could not load DroidSans.ttf - Application will not look as intended");
+
+    if (icon_font == nullptr)
+        app_state.push_error_message("Could not load fa-solid-900.ttf - Icons will not look as intended");
+}
+
 int main(int, char**)
 {
     GLFWwindow* window = setup_window();
@@ -786,32 +824,13 @@ int main(int, char**)
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     ImGui_ImplOpenGL3_Init(glsl_version);
 
-    // Support loading the included font from a couple of places
-    ImFont*                  main_font      = nullptr;
-    std::vector<std::string> font_locations = {
-        "DroidSans.ttf",
-        "misc/fonts/DroidSans.ttf",
-        "../misc/fonts/DroidSans.ttf"
-    };
-    for (const auto& location : font_locations)
-    {
-        if (Fileops::file_exists(location.c_str()))
-        {
-            main_font = IO.Fonts->AddFontFromFileTTF(location.c_str(), FONT_SIZE);
-            break;
-        }
-    }
-
     Settings settings("settings.ini");
 
     AppState app_state(window);
     app_state.send_velocity = settings.get_send_velocity();
     app_state.algorithms    = Algorithm::build_algorithms();
 
-    if (main_font == nullptr)
-    {
-        app_state.push_error_message("Could not load font DroidSans.ttf, application will not look as intended");
-    }
+    load_fonts(IO, app_state);
 
     // First run, show setup dialog
     app_state.show_options = settings.get_midi_in_name().empty() && settings.get_midi_out_name().empty();
@@ -829,7 +848,7 @@ int main(int, char**)
         }
         else
             Fileops::load_from_disk("lastpreset.txt", synth_state);
-        
+
         on_algorithm_changed(app_state, synth_state);
     }
 
