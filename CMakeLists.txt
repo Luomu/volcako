@@ -7,17 +7,6 @@ SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /ENTRY:mainCRTStartup" )
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 
 set(SOURCES
-    source/algorithm.cpp
-    source/envelope.cpp
-    source/envelope.h
-    source/fileops.cpp
-    source/fileops.h
-    source/main.cpp
-    source/operator.h
-    source/settings.cpp
-    source/synthstate.cpp
-    source/synthstate.h
-    source/sysex.cpp
     libs/imgui/imgui.cpp
     libs/imgui/imgui_demo.cpp
     libs/imgui/imgui_draw.cpp
@@ -27,6 +16,18 @@ set(SOURCES
     libs/imgui/imgui_widgets.cpp    
     libs/rtmidi/RtMidi.cpp
     libs/tinyfiledialogs/tinyfiledialogs.c
+    source/algorithm.cpp
+    source/envelope.cpp
+    source/envelope.h
+    source/fileops.cpp
+    source/fileops.h
+    source/main.cpp
+    source/operator.h
+    source/settings.cpp
+    source/strings.h
+    source/synthstate.cpp
+    source/synthstate.h
+    source/sysex.cpp
 )
 
 set_source_files_properties(

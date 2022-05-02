@@ -9,6 +9,7 @@
 #include "common.h"
 #include "fileops.h"
 #include "settings.h"
+#include "strings.h"
 
 #include <GLFW/glfw3.h>
 #include <IconsFontAwesome6.h>
@@ -421,7 +422,7 @@ void layout_menu_bar(AppState& app, SynthState& synth)
             const char* file_filter[]     = { "*.txt" };
             const char* file_filter_syx[] = { "*.syx" };
 
-            if (ImGui::MenuItem("Init Patch"))
+            if (ImGui::MenuItem(Strings::ACTION_INIT_PATCH))
             {
                 init_patch(app);
             }
@@ -581,17 +582,17 @@ void layout_patch_list(AppState& app)
 
         if (ImGui::BeginPopupContextItem())
         {
-            if (ImGui::Selectable("Copy Patch"))
+            if (ImGui::Selectable(Strings::ACTION_COPY_PATCH))
             {
                 const std::string str = patch.to_clipboard_string();
                 copy_to_clipboard(app, str);
             }
-            if (ImGui::Selectable("Paste Patch"))
+            if (ImGui::Selectable(Strings::ACTION_PASTE_PATCH))
             {
                 const std::string cbstr = get_from_clipboard(app);
                 patch.from_clipboard_string(cbstr);
             }
-            if (ImGui::Selectable("Init Patch"))
+            if (ImGui::Selectable(Strings::ACTION_INIT_PATCH))
             {
                 patch = SynthState();
                 on_active_patch_changed(app);
@@ -724,14 +725,14 @@ void layout_bulk_dump_window(AppState& app_state)
     ImGui::Text("Send all 32 patches to Volca?");
     ImGui::Text("Existing data will be LOST FOREVER");
 
-    if (ImGui::Button("Yes"))
+    if (ImGui::Button(Strings::BUTTON_YES))
     {
         SynthState::send_bank(app_state.midi_out, app_state.patches);
         app_state.show_bulk_dump_window = false;
     }
 
     ImGui::SameLine();
-    if (ImGui::Button("No"))
+    if (ImGui::Button(Strings::BUTTON_NO))
     {
         app_state.show_bulk_dump_window = false;
     }
@@ -747,18 +748,18 @@ void layout_error_window(AppState& app_state)
         return;
     }
 
-    if (!ImGui::IsPopupOpen("Error"))
+    if (!ImGui::IsPopupOpen(Strings::TITLE_ERROR))
     {
-        ImGui::OpenPopup("Error");
+        ImGui::OpenPopup(Strings::TITLE_ERROR);
     }
 
     const std::string& message = app_state.error_messages.back();
 
-    ImGui::BeginPopupModal("Error");
+    ImGui::BeginPopupModal(Strings::TITLE_ERROR);
 
     ImGui::Text(message.c_str());
 
-    if (ImGui::Button("Close"))
+    if (ImGui::Button(Strings::BUTTON_CLOSE))
     {
         app_state.pop_error_message();
     }
@@ -797,10 +798,10 @@ void load_fonts(const ImGuiIO& IO, AppState& app_state)
     }
 
     if (main_font == nullptr)
-        app_state.push_error_message("Could not load DroidSans.ttf - Application will not look as intended");
+        app_state.push_error_message(Strings::COULD_NOT_LOAD_MAIN_FONT);
 
     if (icon_font == nullptr)
-        app_state.push_error_message("Could not load fa-solid-900.ttf - Icons will not look as intended");
+        app_state.push_error_message(Strings::COULD_NOT_LOAD_ICON_FONT);
 }
 
 int main(int, char**)
