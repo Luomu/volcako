@@ -22,11 +22,12 @@ Windows release can be found at: https://github.com/Luomu/volcako/releases/downl
 ## Release notes
 
 ```
-R2 (Unreleased)
+R2 (May 2022)
 [New] Allow copying and pasting patches (right-click patch browser)
 [New] Save the entire patch bank on shutdown as lastbank.syx, load on startup
 [New] Add Init Patch to the browser right-click menu
 [New] EXPERIMENTAL: Add "DX7 compatibility mode" to settings: Sends sysex messages according to the original DX7 spec. Will sound wrong on Volca FM. May work with Volca FM2.
+[New] Add "reset envelope" context menu action
 
 R1 (November 2019)
 Initial release
