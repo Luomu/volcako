@@ -14,5 +14,10 @@ namespace Strings
     constexpr auto BUTTON_YES               = "Yes";
     constexpr auto COULD_NOT_LOAD_ICON_FONT = "Could not load fa-solid-900.ttf - Icons will not look as intended";
     constexpr auto COULD_NOT_LOAD_MAIN_FONT = "Could not load DroidSans.ttf - Application will not look as intended";
+    constexpr auto NO_AVAILABLE_PORTS       = "No available ports";
+    constexpr auto STATUSBAR_DX7_MODE_ON    = "DX7 mode is ON";
+    constexpr auto TITLE_DX7_COMPAT_MODE    = "DX7 Compatibility Mode";
     constexpr auto TITLE_ERROR              = "Error";
+    constexpr auto TITLE_OPTIONS            = "Options";
+    constexpr auto TOOLTOP_DX7_COMPAT_MODE  = "The Volca repurposes the DX7 checksum data to send the operator on/off status.\nCheck this box to send the message in the intended DX7 format.\nMost patches will sound wrong on the Volca when this is enabled.";
 }

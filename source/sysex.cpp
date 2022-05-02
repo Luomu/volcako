@@ -36,7 +36,7 @@ u8 calculate_checksum(const u8* data, int length)
 }
 
 // Send one patch to midi out
-u8 SynthState::send(RtMidiOut& midi_out)
+u8 SynthState::send(RtMidiOut& midi_out, bool dx7_compat)
 {
     static unsigned char m[SYSEX_MESSAGE_LENGTH] = {};
 
@@ -102,7 +102,11 @@ u8 SynthState::send(RtMidiOut& midi_out)
     // data
     m[SX_END] = 0xf7;
 
-    u8 checksum = calculate_checksum(&m[SYSEX_CHECKSUM_START], from_14bit(m[SX_BYTE_COUNT_MSB], m[SX_BYTE_COUNT_LSB]));
+    const u8 checksum = calculate_checksum(&m[SYSEX_CHECKSUM_START], from_14bit(m[SX_BYTE_COUNT_MSB], m[SX_BYTE_COUNT_LSB]));
+
+    // DX7 mode: Checksum is expected in place of operator on/off states
+    if (dx7_compat)
+        m[SX_OPERATOR_ON] = checksum;
 
     midi_out.sendMessage(m, SYSEX_MESSAGE_LENGTH);
 

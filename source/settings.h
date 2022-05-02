@@ -16,6 +16,7 @@ private:
     std::string midi_out_device;
     std::string midi_in_device;
     bool        send_velocity;
+    bool        dx7_compat_mode;
 
 public:
     Settings(const std::string& filename);
@@ -29,4 +30,6 @@ public:
     void               set_midi_out_name(std::string v) { midi_out_device = v; }
     const std::string& get_midi_in_name() const { return midi_in_device; }
     void               set_midi_in_name(std::string v) { midi_in_device = v; }
+    bool               get_dx7_compat_mode() const { return dx7_compat_mode; }
+    void               set_dx7_compat_mode(bool v) { dx7_compat_mode = v; }
 };

@@ -48,7 +48,7 @@ struct SynthState
     }
 
     // send sysex message, returns yamaha checksum (which volca doesn't use)
-    u8 send(RtMidiOut& midi_out);
+    u8 send(RtMidiOut& midi_out, bool dx7_mode);
     // bulk send the entire 32 voice bank, returns yamaha checksum
     static u8 send_bank(RtMidiOut& midi_out, const std::vector<SynthState>& patches);
     // initialize this patch from yamaha sysex message (32 voice format only!)

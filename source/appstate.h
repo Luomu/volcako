@@ -21,6 +21,7 @@ public:
     bool patch_dirty           = false;
     bool quit_requested        = false;
     bool send_velocity         = false;
+    bool dx7_compat_mode       = false;
     bool midi_settings_dirty   = false;
 
     RtMidiOut              midi_out = RtMidiOut(RtMidi::WINDOWS_MM);

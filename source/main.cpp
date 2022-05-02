@@ -557,6 +557,14 @@ void layout_status_bar(AppState& app_state)
         {
             ImGui::SetTooltip("Send midi key velocity. Volca's edit mode must be off!");
         }
+
+        if (app_state.dx7_compat_mode)
+        {
+            ImGui::SameLine();
+            ImGui::Text(Strings::STATUSBAR_DX7_MODE_ON);
+            if (ImGui::IsItemHovered())
+                ImGui::SetTooltip(Strings::TOOLTOP_DX7_COMPAT_MODE);
+        }
     }
     ImGui::End();
     ImGui::PopStyleVar(2);
@@ -828,8 +836,9 @@ int main(int, char**)
     Settings settings("settings.ini");
 
     AppState app_state(window);
-    app_state.send_velocity = settings.get_send_velocity();
-    app_state.algorithms    = Algorithm::build_algorithms();
+    app_state.send_velocity   = settings.get_send_velocity();
+    app_state.dx7_compat_mode = settings.get_dx7_compat_mode();
+    app_state.algorithms      = Algorithm::build_algorithms();
 
     load_fonts(IO, app_state);
 
@@ -1012,7 +1021,7 @@ int main(int, char**)
         // Send the current patch
         if (app_state.patch_dirty)
         {
-            const int checksum = app_state.get_current_patch().send(app_state.midi_out);
+            const int checksum = app_state.get_current_patch().send(app_state.midi_out, app_state.dx7_compat_mode);
             // std::cout << "checksum " << std::hex << checksum << std::endl;
             app_state.patch_dirty = false;
         }
@@ -1037,6 +1046,7 @@ int main(int, char**)
         std::cout << save_result << std::endl;
 
     settings.set_send_velocity(app_state.send_velocity);
+    settings.set_dx7_compat_mode(app_state.dx7_compat_mode);
     settings.save_to_disk();
 
     // Cleanup
